@@ -1,0 +1,21 @@
+*{
+    margin:0;
+    padding:0;
+}
+#hello{
+    width: 100%;
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: bisque;
+}
+#hii{
+    font-size: 30px;
+    padding: 20px;
+    /* width: 70%; */
+    margin: 0px auto;
+    color:firebrick;
+    font-family: sans-serif;
+
+}
