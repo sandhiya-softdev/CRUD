@@ -6,9 +6,12 @@
     })
     .then((data)=>{
         console.log(data);
+          fname.innerHTML = `
+      <h2>${data.data[0].title}</h2>
+      <p>${data.data[0].description}</p>
+    `;
 
-    fname.innerHTML=data.data.title;
-      fname.innerHTML=data.data.descripton;
+    
     console.log(fname);
     })
 
