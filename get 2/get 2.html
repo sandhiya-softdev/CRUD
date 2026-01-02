@@ -4,6 +4,14 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>POST</title>
+    <style>
+        .needy{
+            color:green;
+        }
+        .needy2{
+            color:rgb(201, 61, 61);
+        }
+    </style>
 </head>
 <body>
     <form id="taskForm">
@@ -15,9 +23,9 @@
         <input type="tel" id="phone" name="phone" required>
         <button type="submit">Create Task</button>
     </form>
-
-    <div id="responseMessage" class="needy" style="display: none;"></div>
-    <div id="errorMessageg" class="needy2" style="display: none;"></div>
+    <p id="responseMessage" style="display:none;"></p>
+<p id="errorMessage" style="display:none;"></p>
+   
     <script src="get.js"></script>
 </body>
 </html>
