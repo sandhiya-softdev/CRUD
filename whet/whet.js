@@ -5,7 +5,7 @@ btn.addEventListener("click",(e)=>{
     // refresh stop pandrathu
     let hello = document.getElementById("name").value;
 
-  const url = 'https://api.freeapi.app/api/v1/users/login';
+  const url = "https://jsonplaceholder.typicode.com/posts";
   fetch (url,{
     method:"POST",
     headers:{
@@ -14,10 +14,8 @@ btn.addEventListener("click",(e)=>{
     body: JSON.stringify({name:hello})
   })
   .then((response)=>{
-    if(!response.ok){
-        throw new Error("login failed");
-    }
-    return Response.json();
+   
+    return response.json();
   })
   .then((data)=>{
     //success aaana aprm thaan show
