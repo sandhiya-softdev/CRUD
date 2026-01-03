@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <input id="name" placeholder="New Name">
+<button onclick="update()">Update</button>
+
+<script>
+let id = 1; // Task id
+
+function update() {
+  let newName = document.getElementById("name").value;
+
+  fetch("https://64e2b7c4ab0037358818b3a0.mockapi.io/tasks/" + id, {
+    method: "PUT",                   // tell API: update this task
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ name: newName }) // new info
+  })
+  .then(res => res.json())
+  .then(data => alert("Updated: " + data.name))
+  .catch(err => console.log(err));
+}
+</script>
+</body>
+</html>
