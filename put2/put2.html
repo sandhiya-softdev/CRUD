@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <input type="text" id="name" placeholder="New name">
+    <button onclick="updata()">button</button>
+
+
+    <script>
+        let taskId =1;
+
+        function updata(){
+        let newName = document.getElementById("name").value;
+
+          fetch("https://64e2b7c4ab0037358818b3a0.mockapi.io/users/" + taskId, {
+            method:"PUT",
+            headers:{
+                "Content-Type":"application/json"
+            },
+            body:JSON.stringify({name:newName})
+        })
+        .then((response)=>{
+            if(!response.ok){
+                throw new Error("updated failed");
+            }
+            return response.json();
+
+        })
+        .then((data)=>{
+            alert("updated name:" + data.name)
+        })
+        .catch((error)=>{
+            console.log(error);
+            
+        });
+    }
+
+    </script>
+</body>
+</html>
