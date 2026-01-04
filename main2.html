@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Update Name</title>
+</head>
+<body>
+  <h2>Change Name</h2>
+  <input type="text" id="name">
+  <button id="updateBtn">Update Name</button>
+
+  <script>
+    // 1️⃣ Already irukura name
+    const currentName = "Sandhiya";  
+
+    // 2️⃣ Input la set panna
+    const nameInput = document.getElementById("name");
+    nameInput.value = currentName; // input la Sandhiya kaatuthu
+
+    // 3️⃣ Update button
+    document.getElementById("updateBtn").onclick = () => {
+      const newName = nameInput.value; // user type panna name
+      fetch("https://your-api-url.com/users/1", { // <-- replace with your API
+        method: "PUT",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ name: newName })
+      })
+      .then(res => res.json())
+      .then(data => alert("Name updated to: " + data.name))
+      .catch(err => console.error(err));
+    }
+  </script>
+</body>
+</html>
