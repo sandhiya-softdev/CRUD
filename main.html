@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <input type="text" id="name" placeholder="Enter name">
+    <input type="email" id="email" placeholder="enter email">
+    <button id="updateBtn">but</button>
+
+    <script>
+      const updateBtn = document.getElementById("updateBtn");
+      updateBtn.addEventListener("click",function(){
+        const updateUser={
+            name:document.getElementById("name").value,
+             name:document.getElementById("email").value,
+        };
+        // put request
+           fetch("https://jsonplaceholder.typicode.com/users/1", { 
+            method: "PUT",
+            headers: {
+                "Content-Type":"application/json"
+            },
+            body:JSON.stringify(updateUser)
+        })
+        .then((res)=>res.json())
+        .then(data=>{
+            console.log(data);
+            alert("suceess")
+            
+        })
+        .catch(err=> console.log(error));
+
+      });
+
+    </script>
+</body>
+</html>
