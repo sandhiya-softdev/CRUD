@@ -6,24 +6,78 @@
     <title>Document</title>
 </head>
 <body>
-    <input id="name" placeholder="New Name">
-<button onclick="update()">Update</button>
 
-<script>
-let id = 1; // Task id
+     <div class="container">
+    <h2>Fetch API - PUT Example with Responsive Cards</h2>
+    <div class="cards" id="cardContainer">
+      <!-- Cards will be dynamically inserted here -->
+    </div>
+    <div class="form-container" id="updateForm">
+      <h3>Update Task</h3>
+      <form id="editTaskForm">
+        <input type="text" id="editName" name="name" placeholder="Name" required>
+        <input type="email" id="editEmail" name="email" placeholder="Email" required>
+        <input type="tel" id="editPhone" name="phone" placeholder="Phone" required>
+        <button type="submit">Update Task</button>
+      </form>
+    </div>
+  </div>
 
-function update() {
-  let newName = document.getElementById("name").value;
+  <script>
+      let tasks = []; // Array to hold tasks
+    const cardContainer = document.getElementById("cardContainer");
+    const updateForm = document.getElementById("updateForm");
+    const editTaskForm = document.getElementById("editTaskForm");
+    const editName = document.getElementById("editName");
+    const editEmail = document.getElementById("editEmail");
+    const editPhone = document.getElementById("editPhone");
+    let currentTaskId = null;
+     // Fetch tasks from the API and render them
+    function fetchTasks() {
+       fetch("https://jsonplaceholder.typicode.com/users")
+        .then((res) => res.json())
+        .then((data) => {
+            console.log(data);
+          tasks = data;
+        //   renderCards();
+        })
+        .catch((error) => {
+          console.log("Error fetching tasks:", error);
+        });
+    }
+    //  function renderCards() {
+    //   cardContainer.innerHTML = tasks
+    //     .map(
+    //       (task) => `
+    //       <div class="card">
+    //         <img src="${task.image}" alt="${task.name}">
+    //         <h3>${task.name}</h3>
+    //         <p><strong>Email:</strong> ${task.email}</p>
+    //         <p><strong>Phone:</strong> ${task.phone}</p>
+    //         <button onclick="editTask('${task.id}')">Update</button>
+    //       </div>
+    //     `
+    //     )
+    //     .join("");
+    // }
+   fetchTasks();
 
-  fetch("https://64e2b7c4ab0037358818b3a0.mockapi.io/tasks/" + id, {
-    method: "PUT",                   // tell API: update this task
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({ name: newName }) // new info
-  })
-  .then(res => res.json())
-  .then(data => alert("Updated: " + data.name))
-  .catch(err => console.log(err));
-}
-</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  </script>
+    
 </body>
 </html>
