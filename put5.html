@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>PUT Method Example</title>
+
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 20px;
+    }
+    .container {
+      max-width: 1200px;
+      margin: auto;
+      padding: 20px;
+    }
+    .cards {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 20px;
+    }
+    .card {
+      border: 1px solid #ccc;
+      border-radius: 8px;
+      padding: 20px;
+      background-color: #fff;
+      box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+    }
+    .card button {
+      margin-top: 10px;
+      background-color: #007bff;
+      color: #fff;
+      border: none;
+      padding: 8px 12px;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+    .form-container {
+      margin-top: 20px;
+      border: 1px solid #ccc;
+      padding: 20px;
+      display: none;
+    }
+    input {
+      display: block;
+      width: 100%;
+      margin-bottom: 10px;
+      padding: 8px;
+    }
+  </style>
+</head>
+
+<body>
+  <div class="container">
+    <h2>Fetch API – PUT Example</h2>
+
+    <div class="cards" id="cardContainer"></div>
+
+    <div class="form-container" id="updateForm">
+      <h3>Update Task</h3>
+      <form id="EditTaskForm">
+        <input type="text" id="editName" placeholder="Name" />
+        <input type="email" id="editEmail" placeholder="Email" />
+        <input type="text" id="editPhone" placeholder="Phone" />
+        <button type="submit">Save</button>
+      </form>
+    </div>
+  </div>
+
+  <script>
+    let tasks = [];
+    let currentTaskId = null;
+
+    const cardContainer = document.getElementById("cardContainer");
+    const updateForm = document.getElementById("updateForm");
+    const editTaskForm = document.getElementById("EditTaskForm");
+    const editName = document.getElementById("editName");
+    const editEmail = document.getElementById("editEmail");
+    const editPhone = document.getElementById("editPhone");
+
+    // GET DATA
+    function fetchTasks() {
+      fetch("https://jsonplaceholder.typicode.com/users")
+        .then(res => res.json())
+        .then(data => {
+          tasks = data;
+          renderCards();
+        })
+        .catch(err => console.log(err));
+    }
+
+    // SHOW CARDS
+    function renderCards() {
+      cardContainer.innerHTML = tasks.map(task => `
+        <div class="card">
+          <h3>${task.name}</h3>
+          <p>${task.email}</p>
+          <p>${task.phone}</p>
+          <button onclick="editTask(${task.id})">Update</button>
+        </div>
+      `).join("");
+    }
+
+    // EDIT BUTTON CLICK
+    function editTask(id) {
+      const task = tasks.find(t => t.id === id);
+      if (!task) return;
+
+      currentTaskId = id;
+      updateForm.style.display = "block";
+
+      editName.value = task.name;
+      editEmail.value = task.email;
+      editPhone.value = task.phone;
+    }
+
+    // PUT UPDATE
+    editTaskForm.addEventListener("submit", function (e) {
+      e.preventDefault();
+
+      const updatedTask = {
+        name: editName.value,
+        email: editEmail.value,
+        phone: editPhone.value
+      };
+
+      fetch(`https://jsonplaceholder.typicode.com/users/${currentTaskId}`, {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify(updatedTask)
+      })
+        .then(res => res.json())
+        .then(data => {
+          tasks = tasks.map(task =>
+            task.id === currentTaskId ? data : task
+          );
+          renderCards();
+          updateForm.style.display = "none";
+          alert("Updated successfully!");
+        })
+        .catch(err => console.log(err));
+    });
+
+    fetchTasks();
+  </script>
+</body>
+</html>
