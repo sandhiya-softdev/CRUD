@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <div id="determine"></div>
+
+
+    <script>
+       var crops = document.getElementById("determine");
+       const url = 'https://api.freeapi.app/api/v1/public/meals?page=1&limit=10&query=rice';
+       fetch(url)
+       .then((res)=>{
+        if(res.ok){
+             return res.json();
+        }
+       throw error;
+        // console.log(res);
+        // return res.json();
+        
+       })
+       .then((data)=>{
+        console.log(data);
+        crops.innerText=data.message;
+
+        
+       })
+    </script>
+</body>
+</html>
