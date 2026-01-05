@@ -6,6 +6,29 @@
     <title>Document</title>
 </head>
 <body>
+    <input type="text" id="name" placeholder="enter your name">
+    <button onclick="sendData()">button</button>
     
+
+    <script>
+        function sendData(){
+            const fname=document.getElementById("name").value;
+              fetch("https://jsonplaceholder.typicode.com/users", {
+                method:"POST",
+                headers:{
+                    "Content-Type":"application/json"
+                },
+                body:JSON.stringify({name:fname})
+
+
+        })
+        .then((res)=>{
+            return res.json()
+        })
+        .then((data)=>{
+            alert("data sent success")
+        });
+    }
+    </script>
 </body>
 </html>
