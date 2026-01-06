@@ -12,7 +12,29 @@
     
 
 <script>
-    
+
+    let used = document.getElementById("used");
+    fetch("https://jsonplaceholder.typicode.com/comments?postId=1")
+    .then((res)=>{
+        // console.log(res);
+        if(res.status){
+            return res.json();
+        }else{
+            throw Error("api consued");
+            
+        }
+        
+    })
+    .then((data)=>{
+        // console.log(data);
+
+        used.innerHTML = data.map((hi)=>{
+
+           return `<p>${hi.name}</p>
+            <p>${hi.email}</p>`
+        }).join("");
+        
+    })
 </script>
 </body>
 </html>
