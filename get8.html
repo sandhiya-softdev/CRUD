@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+<div id="hello"></div>
+
+
+<script>
+    let hello =  document.getElementById("hello");
+    fetch("https://jsonplaceholder.typicode.com/comments?postId=1")
+    .then((res)=>{
+        // console.log(res);
+        if(res.ok){
+            return res.json();
+        }else{
+            throw Error("api consumed");
+        }
+        
+    })
+    .then((data)=>{
+        // console.log(data);
+        let loveYourself = "";
+        data.forEach((item)=>{
+            loveYourself = `
+            <p>${item.name}</p>
+            <h1>${item.body}<h1>`
+        });
+      hello.innerHTML+=loveYourself;
+
+
+        
+    });
+</script>
+</body>
+</html>
