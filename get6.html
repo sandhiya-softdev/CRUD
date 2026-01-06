@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <div id="hi"></div>
+
+
+    <script>
+        let hi = document.getElementById("hi");
+        fetch("https://jsonplaceholder.typicode.com/users/1/todos")
+        .then((res)=>{
+            if(res.status){
+                return res.json();
+                
+            }
+            throw Error("api");
+            //  console.log(res);
+             
+            
+        })
+        .then((data)=>{
+            // hi.innerText=data[0].title;
+          hi.innerHTML =  data.map(n =>   `<p>${n.title}</p>`).join("");
+         
+           
+                
+            })
+          
+        
+        .catch((err)=>{
+            console.log(err);
+            
+        });
+          
+
+            
+        
+    </script>
+</body>
+</html>
