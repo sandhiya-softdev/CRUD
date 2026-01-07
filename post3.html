@@ -7,7 +7,60 @@
 </head>
 <body>
     <input type="text" id="secure" placeholder="Name required">
+    <br>
+    <br>
     <input type="email" id="guilt" placeholder="Email required">
+    <br>
+    <br>
     <input type="tel" id="traumes" placeholder="phone number required">
+    <br>
+    <br>
+    <button id="resonate">Button</button>
+
+
+
+    <script>
+        let resonate = document.getElementById("resonate");
+
+
+        resonate.addEventListener("click",(e)=>{
+            e.preventDefault();
+
+
+            const secure = document.getElementById("secure").value;
+            const guilt = document.getElementById("guilt").value;
+            const traumes = document.getElementById("traumes").value;
+
+
+            let task ={
+                name:secure,
+                email:guilt,
+                phone:traumes,
+            };
+              fetch("https://678abc123.mockapi.io/users", {
+                
+                method:"POST",
+                headers:{
+                    "Content-Type":"application/json"
+                },
+                body:JSON.stringify(task)
+            })
+            .then((res)=>{
+                console.log(res);
+                
+            })
+            .catch((error)=>{
+                console.log(error)
+            })
+
+            
+
+
+        });
+                
+
+        
+        
+    </script>
 </body>
 </html>
