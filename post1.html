@@ -11,7 +11,27 @@
 
 
     <script>
+        let execute = document.getElementById("execute").value;
+        let soil = document.getElementById("soil");
+          soil.addEventListener("click",(e)=>{
+            e.preventDefault();
         
+        fetch("https://695b727c1d8041d5eeb6c521.mockapi.io/Crud",{
+            method: "POST",
+            headers: {
+                "Content-Type":"application/json"
+            },
+            body:JSON.stringify({name:execute})
+
+        })
+        .then((res)=>{
+            console.log(res);
+            
+        })
+        .catch((error)=>{
+            console.log(error);
+        })
+          });
     </script>
 </body>
 </html>
