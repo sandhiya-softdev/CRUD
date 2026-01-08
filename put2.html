@@ -4,6 +4,14 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>PUT - API example</title>
+    <style>
+        body{
+            font-family: Arial, Helvetica, sans-serif;
+        }
+        #updateBox{
+            display: none;
+        }
+    </style>
 </head>
 <body>
 <h2>User list</h2>
@@ -14,8 +22,82 @@
  <div id="updateBox">
     <input type="text" id="editName" placeholder="Enter you name">
     <br><br>
-    <!-- <button onlick="updat"></button> -->
+    <button onclick="updateUser()">Button</button>
  </div>
+
+
+ <script>
+    let things = [];
+    let currentId =  null;
+
+    const cardContainer = document.getElementById("cardContainer");
+    const editName = document.getElementById("editName");
+    const updateBox = document.getElementById("updateBox");
+
+
+
+
+
+
+    function getUsers(){
+   fetch("https://695b727c1d8041d5eeb6c521.mockapi.io/Crud")
+
+         .then((res)=>{
+            // console.log(res);
+            return res.json();
+            
+         })
+         .then((data)=>{
+            console.log(data);
+            things = data;
+            showUser();
+         });
+
+    }
+    function showUser(){
+
+        cardContainer.innerHTML = things.map((n)=>
+        `<p>${n.Name}</p>
+        <button onclick= "editUser('${n.id}')">update</button>
+        `).join("");
+    }
+    function editUser(id){
+        const hello = things.find(u=>u.id===id);
+        currentId = id;
+        editName.value = hello.Name;
+        updateBox.style.display = "block";
+
+    }
+    function updateUser(){
+          fetch(`https://695b727c1d8041d5eeb6c521.mockapi.io/Crud/${currentId}`,{
+            method: "PUT",
+            headers:{
+                "Content-Type":"application/json"
+            },
+            body:JSON.stringify({Name:editName.value})
+
+          })
+          .then((res)=>{
+            return res.json();
+          })
+          .then((data)=>{
+           things = things.map(u=>u.id===data.id? data:u);
+           showUser();
+           updateBox.style.display = "none";
+           alert("name successfully");
+          });
+        }
+        
+    
+
+
+
+
+
+
+    getUsers();
+
+ </script>
     
 </body>
 </html>
