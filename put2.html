@@ -4,8 +4,60 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>POST METHODS</title>
+    <style>
+        #updateBox{
+            display: none;
+        }
+    </style>
 </head>
 <body>
+
+
+    <h2>Users list</h2>
+    <div id="cardContainer"></div>
+    <!-- ithula tha namba show panna porom -->
+
+    <div id="updateBox">
+        <h3>Update Name</h3>
+        <input type="text" id="editName" placeholder="Enter new name">
+        <br><br>
+        <button id="updateUser">Update</button>
+    </div>
     
+
+
+    <script>
+        let user = [];
+        let currentId= null;
+
+        const cardContainer = document.getElementById("cardContainer");
+        const updateBox = document.getElementById("updateBox");
+        const editName = document.getElementById("editName");
+
+
+        // get ah vangi atha user vachirom
+      
+        function getUser(){
+         fetch("https://674dd350635bad45618ce6d0.mockapi.io/users")
+         .then((res)=>{
+            console.log(res);
+            
+         })
+         
+
+            //  .then((res)=>{
+            //  return res.json();
+                
+            //  })
+            //  .then((data)=>{
+            //     console.log(data);
+                
+            //  })
+
+        }
+        getUser();
+
+
+    </script>
 </body>
 </html>
