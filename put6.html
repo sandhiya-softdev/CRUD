@@ -8,6 +8,54 @@
 <body>
     <div id="Container"></div>
     <!-- this is we show that output -->
+
+    <div id="update">
+        <input type="text" id="people">
+        <button id="">Button</button>
+    </div>
+
+
+    <script>
+        let fan = [];
+        let currentId = null;
+
+
+        function HelloTimer(){
+    
+       fetch("https://695b727c1d8041d5eeb6c521.mockapi.io/Crud")
+        .then((res)=>{
+            return res.json();
+        })
+        .then((data)=>{
+            console.log(data);
+            fan = data;
+            screenTimer();
+            
+        });
+    }
+        function screenTimer(){
+            Container.innerHTML =fan.map((n)=>{
+                `<p>${n.name}</p>
+                <button onclick = editUser${n.id}<button>`
+            })
+            
+        }
+        function editUser(id){
+            const hey = fan.find(u=u.id===id);
+            currentId = id;
+            people.value = n.name;
+            update.style.display = block;
+
+        }
+        function 
+
+
+
+
+
+
+
+    </script>
     
 </body>
 </html>
