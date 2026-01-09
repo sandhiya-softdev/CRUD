@@ -9,15 +9,20 @@
     <div id="Container"></div>
     <!-- this is we show that output -->
 
-    <div id="update">
+    <div id="update" style="display: none;">
         <input type="text" id="people">
-        <button id="">Button</button>
+        <button id="updateUser()">Update</button>
     </div>
 
 
     <script>
         let fan = [];
         let currentId = null;
+
+
+        const Container = document.getElementById("Container");
+        const people = document.getElementById("people");
+        const update = document.getElementById("update");
 
 
         function HelloTimer(){
@@ -34,33 +39,50 @@
         });
     }
         function screenTimer(){
-            Container.innerHTML =fan.map((n)=>{
+            Container.innerHTML =fan.map(n=>
                 `<p>${n.name}</p>
-                <button onclick = editUser${n.id}<button>`
-            })
+                <button onclick = "editUser(${n.id})">update<button>
+            `).join("");
             
         }
         function editUser(id){
-            const hey = fan.find(u=u.id===id);
+            const hey = fan.find(u=>u.id===id);
             currentId = id;
-            people.value = n.name;
+            people.value = hey.name;
             update.style.display = block;
 
         }
-        function updateUser(){
-             fetch("https://695b727c1d8041d5eeb6c521.mockapi.io/Crud/${currrentid,{
+ function updateUser() {
+  fetch(`https://695b727c1d8041d5eeb6c521.mockapi.io/Crud/${currentId}`, {
+    method: "PUT",
+    headers: {
+      "Content-Type": "application/json"
+    },
+    body: JSON.stringify({
+      name: people.value
+    })
+  })
+  .then(() => {
+    update.style.display = "none";
+    HelloTimer();
+  });
+}
 
-             method:"POST",
-             headers:{
-                "Content-type":"application/json";
-                body:JSON.stringify${people.value}
-             }
+HelloTimer();
 
-             
-             }
-             })
 
-        }
+
+
+
+
+
+
+
+
+
+       
+
+        
         
 
 
