@@ -6,6 +6,28 @@
     <title>Document</title>
 </head>
 <body>
+   
+ <p id="hello"></p>
+
+    <script>
+        let hello = document.getElementById("hello");
+        fetch("https://695b727c1d8041d5eeb6c521.mockapi.io/Crud")
+      .then((res)=>{
+        return res.json();
+      })
+      .then((data)=>{
+        console.log(data);
+        let gn = "";
+        data.Foreach((n)=>{
+            gn+=`<p>${n.name}</p>`;
+        });
+        hello.innerHTML=gn;
+      });
+       
+      
+
+    </script>
+    
     
 </body>
 </html>
