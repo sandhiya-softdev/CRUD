@@ -4,8 +4,114 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
+    <style>
+        #update{
+            display: none;
+        }
+    </style>
 </head>
 <body>
     
+    <div id="container"></div>
+
+    <!-- this get data we show this screen -->
+
+
+    <div id="update">
+        <input type="text" id="fname" placeholder="enter your name">
+        <button onclick="updateUser()">Update</button>
+    </div>
+
+
+
+    <script>
+        let hello = [];
+        let currentId= null;
+
+        const container = document.getElementById("container");
+        const update = document.getElementById("update");
+        const fname = document.getElementById("fname");
+
+
+
+     function getUser(){
+        fetch("https://695b727c1d8041d5eeb6c521.mockapi.io/Crud")
+        .then((res)=>{
+            return res.json();
+        })
+        .then((data)=>{
+            console.log(data);
+            hello = data;
+            showUser();
+            
+        });
+     }
+     
+
+     function showUser(){
+        container.innerHTML = hello.map((n)=>{
+            return`<p>${n.name}</p>
+            <button onclick = "editUser('${n.id}')">update</button>`
+        }).join("");
+     }
+     function editUser(id){
+        let user = hello.find(u=>u.id===id);
+         currentId = id;
+       fname.value = user.name;
+       update.style.display= "block";
+
+
+
+
+     }
+     function updateUser(){
+        fetch(`https://695b727c1d8041d5eeb6c521.mockapi.io/Crud/${currentId}`,{
+        method:"PUT",
+        headers:{
+            "Content-Type":"application/json"
+        },
+        body:JSON.stringify({name:fname.value})
+
+        })
+
+        .then((res)=>{
+            return res.json();
+        })
+        .then((data)=>{
+            console.log(data);
+            hello = hello.map(u=>u.id===data.id? data:u);
+            showUser();
+            update.style.display = "none";
+        });
+    }
+     
+
+
+
+
+
+
+
+
+
+
+
+
+     getUser();
+    </script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 </body>
 </html>
