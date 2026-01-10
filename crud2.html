@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CRUD Simple</title>
+</head>
+<body>
+
+    <!-- ADD USER -->
+    <input type="text" id="newName" placeholder="Enter name">
+    <button onclick="addUser()">Add</button>
+
+  <br>
+  
+
+    <div id="container"></div>
+
+    <!-- UPDATE USER -->
+    <div id="change" style="display: none;">
+        <input type="text" id="kim" placeholder="Enter your name">
+        <button onclick="updateUser()">Update</button>
+    </div>
+
+<script>
+    let main = [];
+    let currentId = null;
+
+    const container = document.getElementById("container");
+    const change = document.getElementById("change");
+    const kim = document.getElementById("kim");
+    const newName = document.getElementById("newName");
+
+    // GET
+    function getUser(){
+        fetch("https://695b727c1d8041d5eeb6c521.mockapi.io/Crud")
+        .then(res => res.json())
+        .then(data => {
+            main = data;
+            showUser();
+        });
+    }
+
+    function showUser(){
+        container.innerHTML = main.map(n => `
+            <p>${n.name}</p>
+            <button onclick="editUser('${n.id}')">Update</button>
+            <button onclick="deleteUser('${n.id}')">Delete</button>
+            <hr>
+        `).join("");
+    }
+
+    // POST
+    function addUser(){
+        if(newName.value === ""){
+            alert("Name enter pannunga");
+            return;
+        }
+
+        fetch("https://695b727c1d8041d5eeb6c521.mockapi.io/Crud",{
+            method:"POST",
+            headers:{
+                "Content-Type":"application/json"
+            },
+            body:JSON.stringify({
+                name:newName.value
+            })
+        })
+        .then(res => res.json())
+        .then(data => {
+            main.push(data);
+            showUser();
+            newName.value = "";
+        });
+    }
+
+    // EDIT
+    function editUser(id){
+        let user = main.find(u => u.id === id);
+        currentId = id;
+        kim.value = user.name;
+        change.style.display = "block";
+    }
+
+    // PUT
+    function updateUser(){
+        fetch(`https://695b727c1d8041d5eeb6c521.mockapi.io/Crud/${currentId}`,{
+            method:"PUT",
+            headers:{
+                "Content-Type":"application/json"
+            },
+            body:JSON.stringify({
+                name:kim.value
+            })
+        })
+        .then(res => res.json())
+        .then(data => {
+            main = main.map(u => u.id === data.id ? data : u);
+            showUser();
+            change.style.display = "none";
+        });
+    }
+
+    // DELETE
+    function deleteUser(id){
+        fetch(`https://695b727c1d8041d5eeb6c521.mockapi.io/Crud/${id}`,{
+            method:"DELETE"
+        })
+        .then(() => {
+            main = main.filter(u => u.id !== id);
+            showUser();
+        });
+    }
+
+    getUser();
+</script>
+
+</body>
+</html>

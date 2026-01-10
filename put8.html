@@ -39,7 +39,9 @@
         function showUser(){
             container.innerHTML = main.map((n)=>
             `<p>${n.name}</p>
-            <button onclick = "editUser('${n.id}')">Update</button>`
+            <button onclick = "editUser('${n.id}')">Update</button>
+             <button onclick = "deleteUser('${n.id}')">delete</button>`
+
 
         ).join("");
 
@@ -81,6 +83,19 @@
             
 
 
+
+        }
+
+        function deleteUser(id){
+            fetch(`https://695b727c1d8041d5eeb6c521.mockapi.io/Crud/${id}`,{
+
+                method:"DELETE",
+
+            })
+            .then(()=>{
+                main=main.filter(u=>u.id!==id);
+                showUser();
+            });
 
         }
 
