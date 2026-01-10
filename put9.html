@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <div id="container"></div>
+
+
+    <div id="when" style="display: none;">
+        <input type="text" id="editName">
+        <button onclick="update()">update</button>
+    </div>
+    
+
+    <script>
+        let whats = [];
+        let currentId = null;
+
+        let container = document.getElementById("container");
+        let editName = document.getElementById("editName");
+        let when = document.getElementById("when");
+
+        function getUser(){
+            fetch ("https://695b727c1d8041d5eeb6c521.mockapi.io/Crud")
+            .then((res)=>{
+                // console.log(res);
+                return res.json();
+                
+            })
+            .then((data)=>{
+                // console.log(data);
+                
+                whats = data;
+                show();
+             
+            });
+        }
+
+        function show(){
+            container.innerHTML = whats.map((n)=>{
+                return`<p>${n.name}</p>
+                <button onclick ="edit('${n.id}')">Edit</button>`
+            }).join("");
+        }
+
+        function edit(id){
+          const hey = whats.find((n)=>n.id===id);
+                currentId = id;
+               editName.value =   hey.name;
+               when.style.display="block";
+
+            
+        }
+        function update(){
+   fetch(`https://695b727c1d8041d5eeb6c521.mockapi.io/Crud/${currentId}`, {
+                method: "PUT",
+                headers: {
+                    "Content-Type":"application/json"
+                },
+                body:JSON.stringify({name:editName.value})
+
+            })
+
+            .then((res)=>{
+           return res.json();
+                
+            })
+            .then((data)=>{
+                whats= whats.map(n=>n.id===data.id?data:n);
+                show();
+                   when.style.display="none";
+
+                
+            })
+        }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        getUser();
+
+       
+
+
+
+
+    </script>
+</body>
+</html>
