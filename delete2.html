@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>DELETE Practice</title>
+</head>
+<body>
+
+<h2>User List</h2>
+<ul id="list"></ul>
+
+<script>
+const list = document.getElementById("list");
+const API = "https://695b727c1d8041d5eeb6c521.mockapi.io/Crud";
+
+// GET users
+function getUsers(){
+    fetch(API)
+    .then(res => res.json())
+    .then(data => {
+        list.innerHTML = "";
+        data.forEach(user => {
+            list.innerHTML += `
+                <li>
+                    ${user.name}
+                    <button onclick="deleteUser(${user.id})">Delete</button>
+                </li>
+            `;
+        });
+    });
+}
+
+// DELETE user
+function deleteUser(id){
+    fetch(`${API}/${id}`, {
+        method: "DELETE"
+    })
+    .then(() => {
+        alert("User Deleted");
+        getUsers(); // refresh list
+    });
+}
+
+// initial call
+getUsers();
+</script>
+
+</body>
+</html>
