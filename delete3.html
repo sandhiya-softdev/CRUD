@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <h1 id="hello"></h1>
+    
+
+
+    <script>
+        let hello = document.getElementById("hello");
+        const API = "https://695b727c1d8041d5eeb6c521.mockapi.io/Crud";
+        fetch(API)
+        .then((res)=>{
+            return res.json();
+        })
+        .then((data)=>{
+            // console.log(data);
+            hello.innerHTML = data.map((n)=>{
+                return` <p>${n.name}</p>
+                <button onclick ="deleteUser('${n.id}')">delete</button>`
+            }).join("");
+            
+            
+        });
+        function deleteUser(id){
+    fetch(`${API}/${id}`, {
+        method: "DELETE"
+    })
+    .then(() => {
+        alert("Deleted");
+        location.reload(); // refresh page
+    });
+}
+     
+    </script>
+</body>
+</html>
