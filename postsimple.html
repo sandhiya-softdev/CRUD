@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>POST Example</title>
+</head>
+<body>
+
+    <input type="text" id="wind" placeholder="Enter name">
+    <button id="high">Add</button>
+
+    <p id="hey"></p>
+
+    <script>
+        let high = document.getElementById("high");
+        let hey = document.getElementById("hey");
+
+        high.addEventListener("click",(e)=>{
+            e.preventDefault();
+
+            let wind = document.getElementById("wind").value;
+
+            if(wind === ""){
+                alert("Name type pannunga");
+                return;
+            }
+
+            fetch("https://695b727c1d8041d5eeb6c521.mockapi.io/Crud",{
+                method:"POST",
+                headers:{
+                    "Content-Type":"application/json"
+                },
+                body:JSON.stringify({ name: wind })
+            })
+            .then(res => res.json())
+            .then(data =>{
+                hey.innerHTML = data.name;
+            })
+            .catch(err =>{
+                console.log(err);
+            });
+        });
+    </script>
+
+</body>
+</html>
