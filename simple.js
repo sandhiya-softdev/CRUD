@@ -6,6 +6,7 @@ fetch('https://api.freeapi.app/api/v1/public/quotes/quote/random')
 })
 .then((data)=>{
     fname.innerHTML=data.data.content;
+    console.log("data");
     console.log(data);
     
 })
