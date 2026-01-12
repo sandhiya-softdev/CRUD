@@ -3,16 +3,135 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>FULL CRUD PRACTICE</title>
+   
+
+
 </head>
 <body>
-  <p id="hello"></p>
-  <button></button>
+<div class="hello">
+<input type="text" id="post" placeholder="Enter your name">
+<br>
+<button onclick="postUser()">Post</button>
+</div>
 
-  <script>
-    let hello= document.getElementById("hello");
 
-  </script>
+<div id="container"></div>
+
+<div id="update" style="display: none;">
+    <input type="text" id="editName">
+    <button onclick="updateUser()">button</button>
+</div>
+
+
+
+<script>
+
+    let store = [];
+    let currentId = null;
+
+
+    let container = document.getElementById("container");
+    let post = document.getElementById("post");
+    let editName = document.getElementById("editName");
+    let update = document.getElementById("update");
+
+
+
+
+
+    
+    function getUser(){
+        fetch("https://695b727c1d8041d5eeb6c521.mockapi.io/Crud")
+        .then((res)=>{
+            return res.json()
+        })
+        .then((data)=>{
+            console.log(data);
+            store = data;
+            showOut();
+            
+        });
+    }
+
+    function showOut(){
+        container.innerHTML = store.map((n)=>{
+            return `<p>${n.name}</p>
+            <button onclick ="editUser('${n.id}')">edit</button>
+             <button onclick ="deleteUser('${n.id}')">delete</button>
+            `
+        }).join("");
+    }
+
+   
+    function postUser(){
+        fetch("https://695b727c1d8041d5eeb6c521.mockapi.io/Crud",{
+            method:"POST",
+            headers:{
+                "Content-Type":"application/json"
+            },
+            body:JSON.stringify({name:post.value})
+
+        })
+        .then((res)=>{
+            return res.json();
+            // console.log(res)
+        })
+        .then((data)=>{
+            store.push(data);
+            showOut();
+            post.value = "";
+
+
+        });
+
+
+    }
+     function editUser(id){
+        const user = store.find(u=>u.id===id);
+        currentId = id;
+        editName.value = user.name
+        update.style.display= "block";
+
+    }
+
+
+    function updateUser(){
+        fetch(`https://695b727c1d8041d5eeb6c521.mockapi.io/Crud"${currentId}`,{
+            method:"PUT",
+            headers:{
+                "Content-Type":"application/json"
+            },
+            body:jSON.stringify({name:editName.value})
+        })
+        .then((res)=>{
+            return res.json();
+        })
+        .then((data)=>{
+            store = store.map(u=>u.id===data.id?data:u);
+            showOut();
+            update.style.display = "none";
+        });
+
+    }
+    function deleteUser(id){
+        fetch(`https://695b727c1d8041d5eeb6c521.mockapi.io/Crud(id)`,{
+            method:"DELETE",
+      
+        })
+        .then(() => {
+            store = store.filter(u => u.id !== id);
+            showOut();
+        });
+    }
+
+
+
+
+
+
+    getUser();
+</script>
     
 </body>
 </html>
