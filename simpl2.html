@@ -18,8 +18,9 @@
             return res.json();
           })
           .then((data)=>{
-            console.log(data);
-            hello.innerText=data.name;
+            result.innerHTML = data.map((n)=>{
+              
+            })
             
           })
         }
