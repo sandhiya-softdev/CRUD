@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+
+
+ .table-container {
+      overflow-x: auto; /* Enable horizontal scrolling */
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 20px;
+    }
+    table, th, td {
+      border: 1px solid #ccc;
+    }
+    th, td {
+      padding: 10px;
+      text-align: left;
+    }
+    th {
+      background-color: #f4f4f4;
+    }
+
+
+
+
+
+
+
+
+
+
+
+
+
+    </style>
+</head>
+<body>
+
+    <form id="taskForm">
+        <input type="text" id="name" name="name" placeholder="Name" required>
+        <input type="email" id="email" name="email" placeholder="email" required>
+        <input type="tel" id="phone" name="phone" placeholder="phone" required>
+        <button id="submit">ADD task</button>
+
+
+
+        <div class="table-container">
+            <table>
+                <thead>
+                    <tr>
+                        <th>id</th>
+                        <th>Name</th>
+                        <th>Email</th>
+                        <th>Phone</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody id="taskTableBody">
+
+                </tbody>
+            </table>
+            <div id="noTasksMessage">no tasks found</div>
+        </div>
+        
+
+        
+
+    </form>
+
+
+
+
+    <script>
+        let tasks = [];
+        const taskTableBody = document.getElementById("taskTableBody");
+        const taskForm = document.getElementById("taskForm");
+        const noTasksMessage = document.getElementById("noTasksMessage");
+        const submitButton = taskForm.querySelector("button");
+        let isEditing =  false;
+        let currentTaskId = null;
+
+        function getTask(){
+            fetch("https://695b727c1d8041d5eeb6c521.mockapi.io/Crud")
+            .then((res)=>{
+                return res.json();
+            })
+            .then((data)=>{
+                // console.log(data);
+                tasks = data;
+                showData();
+                
+            })
+        }
+        function showData(){
+            if(tasks===0){
+                noTasksMessage.style.display="block";
+                taskTableBody.innerHTML = "";
+            }else{
+                noTasksMessage.style.display="none";
+                taskTableBody.innerHTML= tasks.map((task)=>`
+                <tr>
+                    <td>${task.id}</tr>
+                    <td>${task.name}</tr>
+                    <td>${task.email}</tr>
+                    <td>${task.phone}</tr>
+                </tr>
+                <td>
+                <div class="action-button">
+                    <button onclick = "editTask('${task.id}')">edit</button>
+                    <button onclick = "deleteTask('${task.id}')">delete</button>
+                    </div>
+                    <td>
+                `).join("");
+            }
+
+        }
+
+        
+
+
+
+
+
+
+
+        getTask();
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    </script>
+    
+</body>
+</html>
