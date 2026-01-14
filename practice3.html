@@ -6,6 +6,107 @@
     <title>Document</title>
 </head>
 <body>
-    
+    <input type="text" id="fname" placeholder="enter your name"required>
+    <button onclick="postData()">button</button>
+
+
+    <div id="edit" style="display: none;">
+        <input type="text" id="things">
+        <button onclick="putData()">edit </button>
+    </div>
+
+    <div id="hello"></div>
+
+
+
+    <script>
+        let main = [];
+        let currentTaskId = null;
+
+        const fname= document.getElementById("fname");
+        const hello = document.getElementById("hello");
+        const edit = document.getElementById("edit");
+        const things = document.getElementById("things");
+
+
+
+        function getDate(){
+            fetch("https://695b727c1d8041d5eeb6c521.mockapi.io/Crud")
+            .then((res)=>{
+                return res.json();
+            })
+            .then((data)=>{
+                // console.log(data);
+               
+                main =  data;
+                 showData();
+                
+            })
+        }
+
+        function showData(){
+            hello.innerHTML = main.map((m)=>{
+                return`
+                <p>${m.name}<p>
+                 <p>${m.email}<p>
+                <p>${m.phone}<p>
+                <button onclick = "editUser('${m.id}')">edit</button>
+            
+
+                    `
+            }).join("");
+
+
+        }
+        showData();
+
+
+        function editUser(id){
+            let hey = main.find(m=>m.id===id);
+             currentTaskId = id;
+             things.value =hey.name;
+            edit.style.display = "block";
+
+        }
+
+
+
+       function putData(){
+        fetch(`https://695b727c1d8041d5eeb6c521.mockapi.io/Crud/${currentTaskId}`,{
+            method:"PUT",
+            headers:{
+                "Content-Type":"application/json"
+            },
+            body:JSON.stringify({name:things.value})
+        })
+        .then((res)=>{
+            return res.json()
+        })
+        .then((data)=>{
+            main = main.map((m)=>{
+                if(m.id===data.id){
+                    return data;
+                }else{
+                    return m;
+                }
+
+            })
+        });
+       }
+
+
+       function postData(){
+         fetch("https://695b727c1d8041d5eeb6c521.mockapi.io/Crud",{
+            method:"POST"
+         })
+
+
+       }
+
+
+
+
+        getDate();
+    </script>
 </body>
 </html>
