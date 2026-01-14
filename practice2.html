@@ -121,7 +121,106 @@
 
         }
 
-        
+        taskForm.addEventListener("click",(e)=>{
+            e.preventDefault();
+
+            const name = document.getElementById("name").value;
+            const email = document.getElementById("email").value;
+            const phone = document.getElementById("phone").value;
+
+            if(isEditing){
+
+
+          fetch(`https://695b727c1d8041d5eeb6c521.mockapi.io/Crud/${currentTaskId}`,{
+
+            method:"PUT",
+            headers:{
+                "Content-Type":"application/json"
+            },
+            body:JSON.stringify({name,email,phone})
+
+          })
+          .then((res)=>{
+            return res.json();
+          })
+          .then((updateTask)=>{
+            tasks = tasks.map((task)=>{
+                task.id=== updateTask.id ? updateTask: task
+            });
+            showData();
+            resetForm();
+            alert("task updated succesfully")
+          })
+          .catcch((error)=>{
+            console.log("error");
+            
+          })
+          
+         }else{
+            fetch("https://695b727c1d8041d5eeb6c521.mockapi.io/Crud",{
+                method:"POST",
+                headers:{
+                    "Content-Type":"application/json"
+                },
+                body:JSON.stringify({name,email,phone})
+            })
+            .then((res)=>{
+                return res.json();
+            })
+            .then((newTask)=>{
+                tasks.push(newTask);
+                showData();
+                resetForm();
+                alert("task added sucess");
+                
+            })
+            .catch((error)=>{
+                console.log(error);
+            })
+
+      }
+        });
+
+        function editTask(id){
+            const task = task.find((t)=>t.id===id);
+            if(!task) return;
+            isEditing = true;
+            currentTaskId = id;
+            submitButton.textContent = "Edit task";
+
+        }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
