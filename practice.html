@@ -1,0 +1,242 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>API PRACTICE</title>
+    <style>
+        .table-container {
+      overflow-x: auto; /* Enable horizontal scrolling */
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 20px;
+    }
+    table, th, td {
+      border: 1px solid #ccc;
+    }
+    th, td {
+      padding: 10px;
+      text-align: left;
+    }
+    th {
+      background-color: #f4f4f4;
+    }
+    /* .noTask{
+        display: none;
+    } */
+
+
+
+    </style>
+</head>
+<body>
+    <form id="taskForm">
+      <input type="text" id="name" name="name" placeholder="Name" required>
+      <input type="email" id="email" name="email" placeholder="email" required>
+      <input type="tel" id="phone" name="phone" placeholder="phone" required>
+      <button type="submit">sumbit</button>
+
+    </form>
+
+    <div class="table-container">
+        <table>
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Name</th>
+                    <th>Email</th>
+                    <th>Phone</th>
+                    <th>Actions</th>
+                 
+                </tr>
+            </thead>
+            <tbody id="taskTableBody">
+                <!-- TASKS WILL DYNAMICALLY INSERTED HERE -->
+            </tbody>
+        </table>
+        <div id="noTasksMessage" class="noTask">No tasks found.add some tasks!</div>
+    </div>
+
+
+    <script>
+        let tasks = [];
+        const taskTableBody = document.getElementById("taskTableBody");
+        const taskForm = document.getElementById("taskForm");
+        const noTasksMessage = document.getElementById("noTasksMessage");
+        const submitButton = taskForm.querySelector("button");
+        let isEditing = false;
+        let currentTaskId = null;
+
+
+        function taskData(){
+            fetch ("https://695b727c1d8041d5eeb6c521.mockapi.io/Crud")
+            .then((res)=>{
+                return res.json();
+            })
+            .then((data)=>{
+                console.log(data);
+                tasks = data;
+                showUser();
+                
+            })
+
+        }
+
+        
+        function showUser(){
+            if(tasks.length===0){
+                noTasksMessage.style.display="block";
+                taskTableBody.innerHTML = "";
+            }else{
+                  noTasksMessage.style.display = "none";
+                  taskTableBody.innerHTML= tasks.map((task) =>`
+                  <tr>
+                    
+            <td>${task.id}</td>
+            <td>${task.Name}</td>
+            <td>${task.Email}</td>
+            <td>${task.Phone}</td>
+            <td>
+              <div class="action-buttons">
+                <button onclick="editTask('${task.id}')">Edit</button>
+                <button class="delete-button" onclick="deleteTask('${task.id}')">Delete</button>
+              </div>
+            </td>
+          </tr>
+        `
+          ).join("");
+        }
+    }
+
+
+    // add and a update a task
+
+
+    taskForm.addEventListener("submit",(e)=>{
+        e.preventDefault();
+
+
+      const name = document.getElementById("name").value;
+      const email = document.getElementById("email").value;
+      const phone = document.getElementById("phone").value;
+
+
+      if(isEditing){
+        fetch(`https://695b727c1d8041d5eeb6c521.mockapi.io/Crud/${currentTCaskId}`{
+            method: "PUT",
+            headers:{
+                "Content-Type":"application/json"
+            },
+            body:JSON.stringify({name,email,phone})
+
+        })
+
+          .then((res) => res.json())
+          .then((updatedTask) => {
+            tasks = tasks.map((task) =>
+              task.id === updatedTask.id ? updatedTask : task
+            );
+            renderTasks();
+            resetForm();
+            alert("Task updated successfully.");
+          })
+          .catch((error) => console.log("Error updating task:", error));
+
+            } else {
+        // Add Task
+        fetch("https://674dd350635bad45618ce6d0.mockapi.io/crud", {
+          method: "POST",
+          headers: { "content-type": "application/json" },
+          body: JSON.stringify({ name, email, phone }),
+        })
+          .then((res) => res.json())
+          .then((newTask) => {
+            tasks.push(newTask);
+            renderTasks();
+            resetForm();
+            alert("Task added successfully.");
+          })
+          .catch((error) => console.log("Error adding task:", error));
+      }
+    });
+
+
+
+
+
+
+
+
+
+      }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    })
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+      
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  taskData();
+
+    </script>
+
+
+
+
+    
+</body>
+</html>
