@@ -97,7 +97,17 @@
 
        function postData(){
          fetch("https://695b727c1d8041d5eeb6c521.mockapi.io/Crud",{
-            method:"POST"
+            method:"POST",
+            headers:{
+                "Content-Type":"application/json"
+            },
+            body:JSON.stringify({name:things.value})
+         })
+         .then((res)=>{
+            return res.json();
+         })
+         .then((data)=>{
+          main.push(data);
          })
 
 
