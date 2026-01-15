@@ -9,7 +9,7 @@
     <!-- This is for the post methods -->
      <input type="text" id="fname" name="name">
      <input type="tel" id="ftel" name="tel">
-     <button>add</button>
+     <button onclick="postData()">add</button>
     
      <!--THIS GET DATA FOR THIS MAIN  -->
    <div id="main"> </div>
@@ -19,9 +19,130 @@
     <div id="head" style="display: none;">
          <input type="text" id="kim" name="name">
         <input type="tel" id="hate" name="name">
-        <button>edit</button>
+        <button onclick="PutData()">edit</button>
        
     </div>
+
+
+
+    <script>
+        let tamil = [];
+        let currentId = null;
+
+        let main = document.getElementById("main");
+        let kim = document.getElementById("kim");
+        let hate = document.getElementById("hate");
+        let fname = document.getElementById("fname");
+        let ftel = document.getElementById("ftel");
+
+
+        function getData(){
+            fetch("https://695b727c1d8041d5eeb6c521.mockapi.io/Crud")
+            .then((res)=>{
+                return res.json();
+            })
+            .then((data)=>{
+                console.log(data);
+                
+                tamil = data;
+                showDate();
+            })
+        }
+        function showDate(){
+            main.innerHTML = tamil.map((m)=>{
+                return `<p>${m.name}</p>
+                <p>${m.phone}</p>
+                <button onclick = "editUser('${m.id}')">Edit</button>
+                <button onclick = "deleteData('${m.id}')">Edit</button>`
+                
+            }).join("");
+        }
+
+        function editUser(id){
+            const hey = tamil.find((t=>t.id===id));
+            currentId = id;
+             kim.value=hey.name;
+             head.style.display = "block";
+         }
+
+         function PutData(){
+            fetch(`https://695b727c1d8041d5eeb6c521.mockapi.io/Crud/${id}`,{
+                method:"PUT",
+                headers:{
+                    "Content-Type":"application/json"
+                },
+                body:JSON.stringify({name:kim.value})
+
+            })
+            .then((res)=>{
+                return res.json();
+            })
+            .then((data)=>{
+                tamil = tamil.map(m=>{
+                    if(m.id===data.id){
+                        return data;
+                    }else{
+                        return m;
+                    }
+                 
+
+                });
+                   showData();
+                
+            });
+          
+
+         }
+
+         function postData(){
+             fetch("https://695b727c1d8041d5eeb6c521.mockapi.io/Crud"{
+                method:"POST",
+                headers:{
+                    "Content-Type":"application/json"
+                },
+                body:JSON.stringify({name:kim.value})
+             })
+             .then((res)=>{
+                return res.json();
+             })
+             .then((data)=>{
+                tamil.push(data);
+             })
+
+         }
+
+         function deleteData(){
+            fetch(`https://695b727c1d8041d5eeb6c521.mockapi.io/Crud/${id}`,{
+                method:"DELETE",
+            })
+            .then((res)=>{
+                return res.json();
+            })
+            .then(()=>{
+                tamil = tamil.filter((m=>m.id!==id));
+                showdata();
+            })
+
+         }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        getData();
+
+
+    </script>
 
 
 
