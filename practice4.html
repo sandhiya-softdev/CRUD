@@ -67,7 +67,7 @@
          }
 
          function PutData(){
-            fetch(`https://695b727c1d8041d5eeb6c521.mockapi.io/Crud/${id}`,{
+            fetch(`https://695b727c1d8041d5eeb6c521.mockapi.io/Crud/${currentId}`,{
                 method:"PUT",
                 headers:{
                     "Content-Type":"application/json"
@@ -96,12 +96,12 @@
          }
 
          function postData(){
-             fetch("https://695b727c1d8041d5eeb6c521.mockapi.io/Crud"{
+             fetch("https://695b727c1d8041d5eeb6c521.mockapi.io/Crud",{
                 method:"POST",
                 headers:{
                     "Content-Type":"application/json"
                 },
-                body:JSON.stringify({name:kim.value})
+                body:JSON.stringify({name:fname.value})
              })
              .then((res)=>{
                 return res.json();
@@ -112,7 +112,7 @@
 
          }
 
-         function deleteData(){
+         function deleteData(id){
             fetch(`https://695b727c1d8041d5eeb6c521.mockapi.io/Crud/${id}`,{
                 method:"DELETE",
             })
