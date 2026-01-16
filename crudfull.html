@@ -9,7 +9,7 @@
     <!-- THIS is for the post data form -->
 
     <input type="text" id="fname" placeholder="Enter your name">
-    <button>Post</button>
+    <button onclick="postData()">Post</button>
 
     <!-- This is we going to show get data -->
 
@@ -20,7 +20,7 @@
      <div id="update" style="display: none;">
 
     <input type="text" id="fname1">
-    <button>edit</button>
+    <button onclick="putData()">update</button>
     </div>
 
 
@@ -55,10 +55,12 @@
         function getShow(){
             
             get.innerHTML = array.map((m)=>{
-                return `<p>${m.name}<p>
+                return `
+                <div>
+                  <p>${m.name}</p>
                     <button onclick = "editUser('${m.id}')">edit</button>
                     <button onclick = "deleteUser('${m.id}')">delete</button>
-
+                     </div>
                     `
             }).join("");
 
@@ -76,7 +78,7 @@
         // update pandra ah data 
 
         function putData(){
-          fetch(`${url}${currentId}`,{
+          fetch(`${url}/${currentId}`,{
             method:"PUT",
             headers:{
                 "Content-Type":"application/json"
@@ -87,10 +89,47 @@
             return res.json();
           })
           .then((data)=>{
-            data = array.map((m))
+            array = array.map(m=>{
+                if(m.id===data.id){
+                    return data;
+                }
+                return m;
+            });
+            getShow();
+            update.style.display = "none";
           })
 
         }
+
+        function postData(){
+            fetch(url,{
+                method:"POST",
+                headers:{
+                    "Content-Type":"application/json"
+                },
+                body:JSON.stringify({name:fname.value})
+            })
+            .then((res)=>{
+                return res.json();
+            })
+            .then((data)=>{
+                array.push(data);
+                getShow();
+                fname.value = "";
+
+            })
+        }
+
+      function deleteUser(id){
+        fetch(`${url}/${id}`,{
+            method:"DELETE",
+
+        })
+        .then(()=>{
+            array = array.filter(m=>m.id!==id);
+            getData();
+        })
+      }
 
 
 
