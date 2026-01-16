@@ -34,7 +34,8 @@
         let hate = document.getElementById("hate");
         let fname = document.getElementById("fname");
         let ftel = document.getElementById("ftel");
-
+        const head = document.getElementById("head");
+         
 
         function getData(){
             fetch("https://695b727c1d8041d5eeb6c521.mockapi.io/Crud")
@@ -45,10 +46,10 @@
                 console.log(data);
                 
                 tamil = data;
-                showDate();
+                showData();
             })
         }
-        function showDate(){
+        function showData(){
             main.innerHTML = tamil.map((m)=>{
                 return `<p>${m.name}</p>
                 <p>${m.phone}</p>
