@@ -14,10 +14,11 @@
 
     <script>
         let hey = document.getElementById("hey");
+                    
+            const fname= document.getElementById("hello").value;
 
         fetch("https://695b727c1d8041d5eeb6c521.mockapi.io/Crud",{
-            
-            const fname= document.getElementById("hello").value;
+
             method:"POST",
             headers:{
                 "Content-Type":"application/json"
@@ -32,7 +33,7 @@
             return res.json();
         })
         .then((data)=>{
-            
+
         })
 
     </script>
