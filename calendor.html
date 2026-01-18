@@ -6,13 +6,142 @@
     <title>Document</title>
 </head>
 <body>
-    <input type="text" id="name" placeholder="enter your name">
-    <button>submit</button>
+    <input type="text" id="fname" placeholder="enter your name">
+    <button onclick="manojData()">submit</button>
 
     <div id="hello"></div>
 
 
-    <script></script>
+    <script>
+        let array = [];
+        let currentId = null;
+        let isEditing = false;
+
+        let fname = document.getElementById("fname");
+        let hello = document.getElementById("hello");
+
+    
+
+
+        function getData(){
+
+     fetch("https://695b727c1d8041d5eeb6c521.mockapi.io/Crud")
+        .then((res)=>{
+            return res.json();
+        })
+        .then((data)=>{
+            // console.log(data);
+            array=data;
+            showData();
+            
+        })
+    }
+    function showData(){
+        hello.innerHTML = array.map((m)=>{
+            return `<p>${m.name}</p>
+            <button onclick = "editUser('${m.id}')">Edit</button>
+             <button onclick = "deleteUser('${m.id}')">delete</button>`
+        }).join("");
+    }
+
+    function manojData(){
+        if(isEditing){
+            fetch(`https://695b727c1d8041d5eeb6c521.mockapi.io/Crud/${currentId}`,{
+                method:"PUT",
+                headers:{
+                    "Content-Type":"application/json"
+                },
+                body:JSON.stringify({name:fname.value})
+
+            })
+            .then((res)=>{
+                return res.json();
+            })
+            .then((data)=>{
+            array = array.map(u => u.id === data.id ? data : u);
+            showData();
+
+
+            })
+        }else{
+            fetch("https://695b727c1d8041d5eeb6c521.mockapi.io/Crud",{
+                method:"POST",
+                headers:{
+                    "Content-Type":"application/json"
+                },
+                body:JSON.stringify({name:fname.value})
+            })
+            .then((res)=>{
+                return res.json()
+            })
+            .then((data)=>{
+                array.push(data);
+                showData();
+            })
+        }
+
+    }
+ 
+    
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    
+
+    function editUser(id){
+
+        let hello = array.find((m=>m.id===id));
+        currentId = id;
+        isEditing = true;
+        fname.value=hello.name;
+
+
+    }
+   function deleteUser(id) {
+    fetch(`https://695b727c1d8041d5eeb6c521.mockapi.io/Crud/${id}`, {
+      method: "DELETE"
+    }).then(() => getData());
+  }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    getData();
+    
+
+
+    </script>
     
 </body>
 </html>
