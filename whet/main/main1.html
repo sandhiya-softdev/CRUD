@@ -2,40 +2,35 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>POST METHODS</title>
 </head>
 <body>
-    <input type="text" id="fname">
-    <button>button</button>
-    
-    <div id="hey"></div>
 
+    <input type="text" id="fname">
+    <button onclick="postData()">Post</button>
+
+    <div id="hey"></div>
 
     <script>
         let hey = document.getElementById("hey");
-                    
-            const fname= document.getElementById("hello").value;
 
-        fetch("https://695b727c1d8041d5eeb6c521.mockapi.io/Crud",{
+        function postData() {
+            const fname = document.getElementById("fname").value;
 
-            method:"POST",
-            headers:{
-                "Content-Type":"application/json"
-            },
-            body:JSON.stringify({name:fname})
-
-
-            
-
-        })
-        .then((res)=>{
-            return res.json();
-        })
-        .then((data)=>{
-
-        })
-
+            fetch("https://695b727c1d8041d5eeb6c521.mockapi.io/Crud", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify({ name: fname })
+            })
+            .then((res) => res.json())
+            .then((data) => {
+                hey.innerHTML = "Posted Successfully: " + data.name;
+                document.getElementById("fname").value = "";
+            });
+        }
     </script>
+
 </body>
 </html>
