@@ -1,0 +1,255 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Full CRUD Example</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 20px;
+    }
+    .container {
+      max-width: 1200px;
+      margin: auto;
+      padding: 20px;
+    }
+    form {
+      margin-bottom: 20px;
+      padding: 15px;
+      border: 1px solid #ccc;
+      border-radius: 8px;
+      background-color: #f9f9f9;
+    }
+    form input {
+      margin: 5px;
+      padding: 8px;
+      font-size: 14px;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+    }
+    form button {
+      padding: 8px 15px;
+      background-color: #007bff;
+      color: #fff;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+    form button:hover {
+      background-color: #0056b3;
+    }
+    .table-container {
+      overflow-x: auto; /* Enable horizontal scrolling */
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 20px;
+    }
+    table, th, td {
+      border: 1px solid #ccc;
+    }
+    th, td {
+      padding: 10px;
+      text-align: left;
+    }
+    th {
+      background-color: #f4f4f4;
+    }
+    .action-buttons {
+      display: flex;
+      gap: 10px; /* Gap between buttons */
+    }
+    .action-buttons button {
+      width: 70px; /* Consistent width for buttons */
+      background-color: #007bff;
+      color: white;
+      border: none;
+      padding: 5px 10px;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+    .action-buttons button:hover {
+      background-color: #0056b3;
+    }
+    .delete-button {
+      background-color: #dc3545;
+    }
+    .delete-button:hover {
+      background-color: #c82333;
+    }
+    .no-tasks {
+      text-align: center;
+      font-size: 16px;
+      color: #888;
+      margin-top: 20px;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h2>Full CRUD Example with Alerts and Empty State</h2>
+
+    <!-- Form -->
+    <form id="taskForm">
+      <input type="text" id="name" name="name" placeholder="Name" required />
+      <input type="email" id="email" name="email" placeholder="Email" required />
+      <input type="tel" id="phone" name="phone" placeholder="Phone" required />
+      <button type="submit">Add Task</button>
+    </form>
+
+    <!-- Table with Horizontal Scroll -->
+    <div class="table-container">
+      <table>
+        <thead>
+          <tr>
+            <th>ID</th>
+            <th>Name</th>
+            <th>Email</th>
+            <th>Phone</th>
+            <th>Actions</th>
+          </tr>
+        </thead>
+        <tbody id="taskTableBody">
+          <!-- Tasks will be dynamically inserted here -->
+        </tbody>
+      </table>
+      <div id="noTasksMessage" class="no-tasks">No tasks found. Add some tasks!</div>
+    </div>
+  </div>
+
+  <script>
+    let tasks = [];
+    const taskTableBody = document.getElementById("taskTableBody");
+    const taskForm = document.getElementById("taskForm");
+    const noTasksMessage = document.getElementById("noTasksMessage");
+    const submitButton = taskForm.querySelector("button");
+    let isEditing = false;
+    let currentTaskId = null;
+
+    // Fetch tasks from the API and render them
+    function fetchTasks() {
+      fetch("https://695b727c1d8041d5eeb6c521.mockapi.io/Crud")
+        .then((res) => res.json())
+        .then((data) => {
+          tasks = data;
+          renderTasks();
+          alert("Tasks loaded successfully.");
+        })
+        .catch((error) => console.log("Error fetching tasks:", error));
+    }
+
+    // Render tasks in the table
+    function renderTasks() {
+      if (tasks.length === 0) {
+        noTasksMessage.style.display = "block";
+        taskTableBody.innerHTML = ""; // Clear table body
+      } else {
+        noTasksMessage.style.display = "none";
+        taskTableBody.innerHTML = tasks
+          .map(
+            (task) => `
+          <tr>
+            <td>${task.id}</td>
+            <td>${task.name}</td>
+            <td>${task.email}</td>
+            <td>${task.phone}</td>
+            <td>
+              <div class="action-buttons">
+                <button onclick="editTask('${task.id}')">Edit</button>
+                <button class="delete-button" onclick="deleteTask('${task.id}')">Delete</button>
+              </div>
+            </td>
+          </tr>
+        `
+          )
+          .join("");
+      }
+    }
+
+    // Add or Update a Task
+    taskForm.addEventListener("submit", (event) => {
+      event.preventDefault();
+
+      const name = document.getElementById("name").value;
+      const email = document.getElementById("email").value;
+      const phone = document.getElementById("phone").value;
+
+      if (isEditing) {
+        // Update Task
+        fetch(`https://695b727c1d8041d5eeb6c521.mockapi.io/Crud/${currentTaskId}`, {
+          method: "PUT",
+          headers: { "content-type": "application/json" },
+          body: JSON.stringify({ name, email, phone }),
+        })
+          .then((res) => res.json())
+          .then((updatedTask) => {
+            tasks = tasks.map((task) =>
+              task.id === updatedTask.id ? updatedTask : task
+            );
+            renderTasks();
+            resetForm();
+            alert("Task updated successfully.");
+          })
+          .catch((error) => console.log("Error updating task:", error));
+      } else {
+        // Add Task
+        fetch("https://695b727c1d8041d5eeb6c521.mockapi.io/Crud", {
+          method: "POST",
+          headers: { "content-type": "application/json" },
+          body: JSON.stringify({ name, email, phone }),
+        })
+          .then((res) => res.json())
+          .then((newTask) => {
+            tasks.push(newTask);
+            renderTasks();
+            resetForm();
+            alert("Task added successfully.");
+          })
+          .catch((error) => console.log("Error adding task:", error));
+      }
+    });
+
+    // Edit a Task
+    function editTask(id) {
+      const task = tasks.find((t) => t.id === id);
+      if (!task) return;
+      isEditing = true;
+      currentTaskId = id;
+      submitButton.textContent = "Edit Task";
+      document.getElementById("name").value = task.name;
+      document.getElementById("email").value = task.email;
+      document.getElementById("phone").value = task.phone;
+    }
+
+    // Delete a Task
+    function deleteTask(id) {
+      fetch(`https://695b727c1d8041d5eeb6c521.mockapi.io/Crud/${id}`, {
+        method: "DELETE",
+      })
+        .then((res) => {
+          if (res.ok) {
+            tasks = tasks.filter((task) => task.id !== id);
+            renderTasks();
+            alert("Task deleted successfully.");
+          }
+        })
+        .catch((error) => console.log("Error deleting task:", error));
+    }
+
+    // Reset Form
+    function resetForm() {
+      isEditing = false;
+      currentTaskId = null;
+      taskForm.reset();
+      submitButton.textContent = "Add Task";
+    }
+
+    // Fetch tasks on page load
+    fetchTasks();
+  </script>
+</body>
+</html>
+  
