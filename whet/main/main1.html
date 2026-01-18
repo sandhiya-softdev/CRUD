@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>POST METHODS</title>
+</head>
+<body>
+    <input type="text" id="fname">
+    <button>button</button>
+    
+    <div id="hey"></div>
+
+
+    <script>
+        let hey = document.getElementById("hey");
+
+        fetch("https://695b727c1d8041d5eeb6c521.mockapi.io/Crud",{
+            
+            const fname= document.getElementById("hello").value;
+            method:"POST",
+            headers:{
+                "Content-Type":"application/json"
+            },
+            body:JSON.stringify({name:fname})
+
+
+            
+
+        })
+        .then((res)=>{
+            return res.json();
+        })
+        .then((data)=>{
+            
+        })
+
+    </script>
+</body>
+</html>
