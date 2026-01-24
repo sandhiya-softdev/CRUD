@@ -36,6 +36,7 @@
                 return `
                 <p>${m.name}</p>
                 <button onclick = "editUser('${m.id}')">edit</button>
+                   <button onclick = "deleteUser('${m.id}')">Delelte</button>
                 `;
                 
             }).join("");
@@ -71,6 +72,17 @@
                 })
                 getdata();
             })
+        }
+        function deleteUser(id){
+            fetch(`https://694fc8ca8531714d9bcef7dc.mockapi.io/crud/${id}`,{
+                method:"DELETE"
+
+            })
+            .then(()=>{
+                getdata();
+
+            })
+
         }
        
         
