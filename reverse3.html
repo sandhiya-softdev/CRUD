@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <input type="text" id="fname">
+    <button onclick="putData()">button</button>
+
+    <div id="display"></div>
+
+
+    <script>
+        let tasks = [];  
+        let currentId = null;
+        let fname = document.getElementById("fname");
+        let display = document.getElementById("display");
+
+        function getdata(){
+            fetch("https://694fc8ca8531714d9bcef7dc.mockapi.io/crud")
+            .then((res)=>{
+                return res.json()
+            })
+            .then((data)=>{
+                console.log(data);
+                tasks = data;
+                showData();
+
+                
+            });
+        }
+        function showData(){
+            display.innerHTML = tasks.map(m=>{
+                return `
+                <p>${m.name}</p>
+                <button onclick = "editUser('${m.id}')">edit</button>
+                `;
+                
+            }).join("");
+
+        }
+        function editUser(id){
+            const task = tasks.find(t=>t.id===id);
+            currentId = id;
+            fname.value=task.name;
+
+
+
+        }
+        function putData(){
+            fetch(`https://694fc8ca8531714d9bcef7dc.mockapi.io/crud/${currentId}`,{
+                method:"PUT",
+                headers:{
+                    "Content-Type":"Application/json"
+                },
+                body:JSON.stringify({name:fname.value})
+            })
+            .then((res)=>{
+                return res.json()
+            })
+            .then((data)=>{
+                tasks = tasks.find((f)=>{
+                    if(f.id===data.id){
+                        return data;
+                    }else{
+                        f.id;
+                    }
+
+                })
+                getdata();
+            })
+        }
+       
+        
+
+
+
+
+
+        getdata();
+    </script>
+</body>
+</html>
