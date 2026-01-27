@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <input type="text" id="ftype">
+    <button id="btn">button</button>
+
+    <div id="show">
+
+    </div>
+
+
+    <script>
+        let main = [];
+        let isEditing = false;
+        let currentId = null'
+
+        let ftype = document.getElementById("ftype");
+        let btn = document.getElementById("btn");
+        let show = document.getElementById("show");
+
+
+        function getData(){
+            fetch("https://694fc8ca8531714d9bcef7dc.mockapi.io/crud")
+            .then((res)=>{
+                return res.json();
+            })
+            .then((data)=>{
+                // console.log(data);
+                
+                main = data;
+                showData();
+
+            })
+        }
+        getData();
+
+        function showData(){
+            show.innerHTML = main.map((m)=>{
+                return `<p>${m.name}</p>
+                <button onclick = "editUser('${m.id}')">edit</button>
+                <button onclick = "deleteUser('${m.id}')">Delete</button>
+                `
+
+            }).join("");
+        }
+        btn.addEventListener("click",()=>{
+            if(isEditing){
+                fetch(`https://694fc8ca8531714d9bcef7dc.mockapi.io/crud/${currentId}`,{
+                    method:"PUT",
+                    headers:{
+                        "Content-Type":"Application/json"
+                    },
+                    body:JSON.stringify({ftype:ftype.value})
+
+                })
+                .then((res)=>{
+                    return res.json();
+                })
+                .then((data)=>{
+                    main= main.map((m)=>{
+                        if(m.id===data.id){
+                            return data.id;
+                        }else{
+                            return i;
+                        }
+                    })
+                })
+
+            }else{
+                fetch("https://694fc8ca8531714d9bcef7dc.mockapi.io/crud",{
+                    method:"POST",
+                    headers:{
+                        "Content-Type":"Application/json"
+                    },
+                    body:JSON.stringify({ftype:ftype.value})
+
+                })
+                .then((res)=>{
+                    return res.json();
+                })
+                .then((data)=>{
+                    main.push(data);
+                })
+            }
+
+
+        })
+        function editUser(id){
+            
+        }
+
+
+
+
+
+
+
+
+
+        
+    </script>
+    
+</body>
+</html>
