@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <input type="text" id="fname">
+    <button onclick="putData()">btn</button>
+
+    <div id="dataShow"></div>
+    
+
+
+    <script>
+        let hello = [];
+        let currentId = null;
+        let fname = document.getElementById("fname");
+        let dataShow = document.getElementById("dataShow");
+
+        function showData(){
+            fetch("https://694fc8ca8531714d9bcef7dc.mockapi.io/crud")
+            .then((res)=>{
+                return res.json();
+            })
+            .then((data)=>{
+                // console.log(data);
+                hello=data;
+                dataShow.innerHTML = hello.map((m)=>{
+                    return`<p>${m.name}</p>
+                    <button onclick = editUser('${m.id}')>edit</button>
+                    <button onclick = deleteUser('${m.id}')>delete</button>`
+                }).join("");
+                
+            });
+         }
+         function editUser(id){
+            let hey = hello.find((m)=>m.id===id);
+            fname.value=hey.name;
+            currentId = id;
+
+         }
+
+         function putData(){
+            fetch(`https://694fc8ca8531714d9bcef7dc.mockapi.io/crud/${currentId}`,{
+                method:"PUT",
+                headers:{
+                    "Content-Type":"Application/json"
+                },
+                body:JSON.stringify({name:fname.value})
+
+
+            })
+            .then((res)=>{
+                return res.json();
+            })
+            .then((data)=>{
+               hello = hello.map((m)=>{
+            
+                if(m.id===data.id){
+                    return data;
+                }else{
+                     return m;
+                }
+               })
+            })
+
+            
+         }
+    
+
+
+            
+
+         
+
+        showData()
+
+    </script>
+</body>
+</html>
