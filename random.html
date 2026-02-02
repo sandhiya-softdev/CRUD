@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <div id="show"></div>
+
+    <script>
+        fetch("https://694fc8ca8531714d9bcef7dc.mockapi.io/crud")
+        .then((res)=>{
+            return res.json();
+
+        })
+        .then((data)=>{
+            // console.log(data);
+            data.forEach(items => {
+                show.innerHTML +=`<P>${items.name}</p>`;
+
+
+                
+            });
+            
+        })
+        
+
+    </script>
+    
+</body>
+</html>
