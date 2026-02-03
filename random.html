@@ -6,9 +6,15 @@
     <title>Document</title>
 </head>
 <body>
-    <div id="show"></div>
+    <div id="show"> </div>
+        <div id="findDiv"></div>
+        
+   
 
     <script>
+        let array=[];
+        let show = document.getElementById("show");
+        let findDiv = document.getElementById("findDiv");
         fetch("https://694fc8ca8531714d9bcef7dc.mockapi.io/crud")
         .then((res)=>{
             return res.json();
@@ -16,12 +22,17 @@
         })
         .then((data)=>{
             // console.log(data);
-            data.forEach(items => {
+            array=data;
+            array.forEach(items => {
                 show.innerHTML +=`<P>${items.name}</p>`;
 
-
-                
             });
+
+         let result = array.find(m=>m.name.trim().toLowerCase()==="roosevelt");
+          
+                findDiv.innerHTML = `<p>${result.name}</p>`;
+           
+
             
         })
         
