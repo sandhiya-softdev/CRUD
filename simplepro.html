@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+
+</head>
+<body>
+    <div id="show"></div>
+
+    <script>
+        let show = document.getElementById("show");
+ let users = [
+  { id: 1, name: "Arun", email: "arun@gmail.com" },
+  { id: 2, name: "Sandhiya", email:"sandhiya@gmail.com" },
+  { id: 3, name: "Kumar", email: "kumar@gmail.com" }
+];
+
+   let hello = users.find((m)=>m.email==="sandhiya@gmail.com");
+   show.innerHTML = `<p>${hello.email}</p>`
+   
+
+
+
+
+
+
+    </script>
+    
+</body>
+</html>
