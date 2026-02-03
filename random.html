@@ -8,6 +8,7 @@
 <body>
     <div id="show"> </div>
         <div id="findDiv"></div>
+        <div id="mapDiv"></div>
         
    
 
@@ -15,6 +16,7 @@
         let array=[];
         let show = document.getElementById("show");
         let findDiv = document.getElementById("findDiv");
+        let mapDiv = document.getElementById("mapDiv");
         fetch("https://694fc8ca8531714d9bcef7dc.mockapi.io/crud")
         .then((res)=>{
             return res.json();
@@ -22,7 +24,7 @@
         })
         .then((data)=>{
             // console.log(data);
-            array=data;
+            array=data; 
             array.forEach(items => {
                 show.innerHTML +=`<P>${items.name}</p>`;
 
@@ -31,10 +33,16 @@
          let result = array.find(m=>m.name.trim().toLowerCase()==="roosevelt");
           
                 findDiv.innerHTML = `<p>${result.name}</p>`;
+
+             let high=array.map((m)=>m.name.toLowerCase().startsWith("mr"));
+             mapDiv.innerHTML = high.map(v=>`<p>${v}</p>`).join("");
            
 
             
         })
+
+
+
         
 
     </script>
