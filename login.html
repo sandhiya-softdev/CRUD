@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        body{
+            width:100%;
+            height:100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            
+        }
+        .hey{
+            display: block;
+        }
+      
+    </style>
+</head>
+<body>
+    <form>
+    <input type="email" id="femail" class="hey" placeholder="ENTER YOU email"    autocomplete="useremail">
+    <BR>
+    <input type="password" id="fpassword" class="hey" placeholder="ENTER YOUR PASSWORD"  autocomplete="new-password">
+    </form>
+    
+
+    <script>
+        let femail= document.getElementById("femail");
+         let fpassword= document.getElementById("fpassword");
+        const users = [
+  { email: "test@gmail.com", password: "1234" },
+  { email: "admin@gmail.com", password: "admin" }
+];
+
+let uess=users.find(u=>u.email===femail && u.password===fpassword);
+ console.log(uess);
+ 
+
+
+
+    </script>
+</body>
+</html>
