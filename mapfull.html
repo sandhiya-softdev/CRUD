@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    
+
+    <script>
+        let students = [
+  { name: "Arun", mark: 80 },
+  { name: "Bala", mark: 35 }
+];
+
+let stu=students.map((m)=>{
+    if(m.mark>50){
+        return "pass"+ m.name;
+    }
+    return "fail"+m.name;
+})
+console.log(stu);
+
+
+
+
+        
+    </script>
+</body>
+</html>
