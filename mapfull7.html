@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <div id="prod"></div>
+
+    <script>
+        let prod = document.getElementById("prod");
+        let products = [
+      { name: "Shirt", price: 500 },
+      { name: "Pant", price: 800 },
+      { name: "Shoes", price: 1200 }
+    ];
+
+    let hello=products.map((m)=>{
+        return `<p>${m.name} - ${m.price}</p>`
+    });
+    prod.innerHTML = hello.join("");
+
+
+    </script>
+    
+</body>
+</html>
